@@ -124,7 +124,65 @@ $controller->handleRequest();
 
 
 
+<section class="container py-5">
 
+    <!-- Success message alert -->
+    <?php if ($controller->success): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($controller->success) ?></div>
+    <?php endif; ?>
+
+    <!-- Display form errors -->
+    <?php foreach ($controller->errors as $err): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($err) ?></div>
+    <?php endforeach; ?>
+
+    <!-- Contact form starts here -->
+    <form method="POST">
+        <div class="row">
+            <!-- Name input field -->
+            <div class="col-md-6 mb-3">
+                <input type="text" name="name" class="form-control" placeholder="Name"
+                       value="<?= htmlspecialchars($controller->name) ?>">
+            </div>
+
+            <!-- Surname input field -->
+            <div class="col-md-6 mb-3">
+                <input type="text" name="surname" class="form-control" placeholder="Surname"
+                       value="<?= htmlspecialchars($controller->surname) ?>">
+            </div>
+        </div>
+
+        <!-- Email input field -->
+        <div class="mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Your Email"
+                   value="<?= htmlspecialchars($controller->email) ?>">
+        </div>
+
+        <!-- Category checkboxes -->
+        <div class="mb-3">
+            <?php
+            $options = ['Cars', 'Apartments', 'Shopping', 'Food & Life', 'Traveling'];
+            foreach ($options as $opt): ?>
+                <label class="me-3">
+                    <input type="checkbox" name="categories[]" value="<?= $opt ?>"
+                        <?= in_array($opt, $controller->categories) ? 'checked' : '' ?>>
+                    <?= $opt ?>
+                </label>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Message textarea -->
+        <div class="mb-3">
+            <textarea name="message" class="form-control"
+                      placeholder="Message"><?= htmlspecialchars($controller->message) ?></textarea>
+        </div>
+
+        <!-- Submit button -->
+        <button class="btn btn-primary">
+            <i class="fa fa-paper-plane"></i> Send Message
+        </button>
+    </form>
+</section>
 
 
 <!-- footer section starts -->
