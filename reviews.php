@@ -16,6 +16,48 @@ class ReviewHandler {
         $this->pdo = $pdo;
     }
 
+    // Handle review form submission
+    public function handleForm() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Get and sanitize form inputs
+            $this->name = trim($_POST['name'] ?? '');
+            $this->comment = trim($_POST['comment'] ?? '');
+            $this->stars = $_POST['stars'] ?? '';
+            $this->category = $_POST['category'] ?? 'Apartments';
+
+            // Validate name input
+            if (!$this->name || !preg_match('/^[a-zA-Z0-9_ ]+$/u', $this->name)) {
+                $this->errors['name'] = 'Please enter a valid name';
+            }
+
+            // Validate comment input
+            if (!$this->comment) {
+                $this->errors['comment'] = 'Please enter a comment';
+            }
+
+            // Validate star rating input
+            if (!in_array($this->stars, ['1', '2', '3', '4', '5'])) {
+                $this->errors['stars'] = 'Please select a rating';
+            }
+
+            // Validate category input
+            if (!in_array($this->category, ['Apartments', 'Food', 'Car rental', 'Shopping', 'Tours'])) {
+                $this->category = 'Apartments';
+            }
+
+            // If no validation errors
+            if (empty(array_filter($this->errors))) {
+                // Insert review into database
+                $stmt = $this->pdo->prepare("INSERT INTO reviews (name, comment, stars, category) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$this->name, $this->comment, $this->stars, $this->category]);
+
+                // Clear input fields
+                $this->name = $this->comment = $this->stars = '';
+            }
+        }
+    }
+
+
 
 
 <!-- HTML starts here -->
