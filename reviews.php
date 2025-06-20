@@ -1,3 +1,23 @@
+<?php
+// Include database connection class
+require_once 'classes/database.php';
+
+class ReviewHandler {
+    // Database connection and form data
+    private $pdo;
+    public $name = '';
+    public $comment = '';
+    public $stars = '';
+    public $category = 'Apartments';
+    public $errors = ['name' => '', 'comment' => '', 'stars' => ''];
+
+    // Constructor receives PDO connection
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
+    }
+
+
+
 <!-- HTML starts here -->
 <!DOCTYPE html>
 <html lang="en">
