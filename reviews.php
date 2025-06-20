@@ -116,7 +116,57 @@ $reviews = $reviewHandler->fetchReviews();
   </div>
 <!-- banner section ends -->
 
+<section class="container py-5">
+  <!-- Review form title -->
+  <h2 class="mb-4">Leave a Review</h2>
 
+  <!-- Review form start -->
+  <form method="POST">
+    <!-- Name input -->
+    <div class="mb-3">
+      <label class="form-label">Your Name or Username:</label>
+      <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($reviewHandler->name) ?>">
+      <div style="color:red;"><?= $reviewHandler->errors['name'] ?></div>
+    </div>
+
+    <!-- Comment textarea -->
+    <div class="mb-3">
+      <label class="form-label">Your Comment:</label>
+      <textarea name="comment" class="form-control"><?= htmlspecialchars($reviewHandler->comment) ?></textarea>
+      <div style="color:red;"><?= $reviewHandler->errors['comment'] ?></div>
+    </div>
+
+    <!-- Category selection -->
+    <div class="mb-3">
+      <label class="form-label">Category:</label>
+      <select name="category" class="form-control">
+        <?php
+        $options = ['Apartments', 'Food', 'Car rental', 'Shopping', 'Tours'];
+        foreach ($options as $opt):
+        ?>
+        <!-- Category option -->
+        <option value="<?= $opt ?>" <?= $reviewHandler->category === $opt ? 'selected' : '' ?>><?= $opt ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+
+    <!-- Star rating input -->
+    <div class="mb-3">
+      <label class="form-label">Rating:</label><br>
+      <div id="stars-wrapper">
+        <?php for ($i = 1; $i <= 5; $i++): ?>
+          <!-- Star radio button -->
+          <input type="radio" id="star<?= $i ?>" name="stars" value="<?= $i ?>" style="display: none" <?= ($reviewHandler->stars == $i) ? 'checked' : '' ?>>
+          <label for="star<?= $i ?>" class="star" data-value="<?= $i ?>">&#9733;</label>
+        <?php endfor; ?>
+      </div>
+      <div style="color:red;"><?= $reviewHandler->errors['stars'] ?></div>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+  </form>
+</section>
 
 
 <?php include_once "assets/parts/footer.php" ?>
