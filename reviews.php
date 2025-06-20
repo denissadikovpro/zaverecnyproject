@@ -57,7 +57,20 @@ class ReviewHandler {
         }
     }
 
+    // Get all reviews from database
+    public function fetchReviews() {
+        $stmt = $this->pdo->query("SELECT * FROM reviews ORDER BY id DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
 
+// Initialize database and handler
+$db = new Database();
+$pdo = $db->connect();
+$reviewHandler = new ReviewHandler($pdo);
+$reviewHandler->handleForm();
+$reviews = $reviewHandler->fetchReviews();
+?>
 
 
 <!-- HTML starts here -->
