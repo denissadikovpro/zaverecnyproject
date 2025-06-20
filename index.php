@@ -26,7 +26,15 @@
 
 <body>
 
+<!-- header section starts -->
+<?php include_once "assets/parts/header.php" ?>
+<!-- header section ends -->
 
+
+
+<!-- footer section starts -->
+<?php include_once "assets/parts/footer.php" ?>
+<!-- footer section ends -->
 
 
   <!-- Scripts -->
