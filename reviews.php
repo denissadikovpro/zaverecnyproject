@@ -168,6 +168,73 @@ $reviews = $reviewHandler->fetchReviews();
   </form>
 </section>
 
+<section class="container py-5">
+  <!-- All reviews title -->
+  <h2 class="mb-4">All Reviews</h2>
+
+  <!-- Loop through reviews -->
+  <?php foreach ($reviews as $r): ?>
+    <div class="mb-4 border-bottom pb-3">
+      <!-- Review author -->
+      <strong style="color:#ffb300;"><?= htmlspecialchars($r['name']) ?></strong><br>
+      <!-- Review date and category -->
+      <small class="text-muted">
+        <?= date('F j, Y H:i', strtotime($r['created_at'])) ?> |
+        Category: <?= htmlspecialchars($r['category']) ?>
+      </small>
+      <!-- Review stars -->
+      <div>
+        <?php for ($i = 1; $i <= 5; $i++): ?>
+          <span style="color:<?= $i <= $r['stars'] ? '#ffb300' : '#ccc' ?>">&#9733;</span>
+        <?php endfor; ?>
+      </div>
+      <!-- Review comment -->
+      <p class="mt-2"><?= nl2br(htmlspecialchars($r['comment'])) ?></p>
+    </div>
+  <?php endforeach; ?>
+</section>
+
+
+<style>
+.star { font-size: 24px; color: #ccc; cursor: pointer; transition: color 0.2s; }
+.star.selected { color: #ffb300; }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const starsWrapper = document.getElementById('stars-wrapper');
+  const stars = starsWrapper.querySelectorAll('.star');
+  const radios = starsWrapper.querySelectorAll('input[type="radio"]');
+
+  function highlightStars(count) {
+    stars.forEach(star => {
+      const val = parseInt(star.getAttribute('data-value'));
+      star.classList.toggle('selected', val <= count);
+    });
+  }
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const val = parseInt(star.getAttribute('data-value'));
+      radios[val - 1].checked = true;
+      highlightStars(val);
+    });
+
+    star.addEventListener('mouseover', () => {
+      const val = parseInt(star.getAttribute('data-value'));
+      highlightStars(val);
+    });
+
+    star.addEventListener('mouseout', () => {
+      const checkedRadio = starsWrapper.querySelector('input[type="radio"]:checked');
+      highlightStars(checkedRadio ? parseInt(checkedRadio.value) : 0);
+    });
+  });
+
+  const checkedRadio = starsWrapper.querySelector('input[type="radio"]:checked');
+  if (checkedRadio) highlightStars(parseInt(checkedRadio.value));
+});
+</script>
 
 <?php include_once "assets/parts/footer.php" ?>
 
