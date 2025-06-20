@@ -52,3 +52,20 @@ class ContactController {
         }
         if (!$this->message) $this->errors[] = 'Message is required';
     }
+
+    // Save message to database
+    private function saveMessage() {
+        $catString = implode(', ', $this->categories);
+        $stmt = $this->pdo->prepare("INSERT INTO contact_messages (name, surname, email, categories, message) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$this->name, $this->surname, $this->email, $catString, $this->message]);
+    }
+}
+
+// Initialize database connection
+$db = new Database();
+$pdo = $db->connect();
+
+// Create controller and handle request
+$controller = new ContactController($pdo);
+$controller->handleRequest();
+?>
