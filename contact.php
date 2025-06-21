@@ -179,7 +179,7 @@ $controller->handleRequest();
 
         <!-- Submit button -->
         <button class="btn btn-primary">
-            <i class="fa fa-paper-plane"></i> Send Message
+            <i></i> Send Message
         </button>
     </form>
 </section>
